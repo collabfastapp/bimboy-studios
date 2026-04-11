@@ -1,214 +1,166 @@
-import Image from "next/image";
-import Link from "next/link";
-import { CreatorCard } from "@/components/creator-card";
-import { SectionTitle } from "@/components/section-title";
-import { VideoCard } from "@/components/video-card";
-import { creators, studios, videos } from "@/lib/placeholders";
+"use client";
 
-const featuredReleases = videos;
-const featuredCreators = creators;
-const featuredStudios = studios;
+import Link from "next/link";
+import { useRef, useState } from "react";
+
+const HERO_VIDEO_ID = "31adab135f48d93f64c3ae2861d67fe6";
+
+type ReleaseCardProps = {
+  title: string;
+  slug: string;
+  cast: string;
+  price: string;
+  videoId: string;
+};
+
+function HoverVideoCard({ title, slug, cast, price, videoId }: ReleaseCardProps) {
+  const [hovered, setHovered] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function handleEnter() {
+    setHovered(true);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setHovered(false);
+    }, 30000);
+  }
+
+  function handleLeave() {
+    setHovered(false);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }
+
+  return (
+    <Link
+      href={`/videos/${slug}`}
+      className="group block overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0a0a] transition hover:-translate-y-1 hover:border-white/20"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <div className="relative aspect-video w-full overflow-hidden bg-black">
+        {!hovered ? (
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0.18)), url('/images/hero-banner.svg')",
+            }}
+          />
+        ) : (
+          <iframe
+            src={`https://iframe.videodelivery.net/${videoId}?muted=true&autoplay=true&controls=false&loop=true`}
+            className="absolute inset-0 h-full w-full"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+          />
+        )}
+
+        <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-pink-200">
+          Premium
+        </div>
+
+        <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+          <div>
+            <h3 className="text-2xl font-bold text-white drop-shadow-lg">{title}</h3>
+            <p className="mt-1 text-sm text-white/75">Cast: {cast}</p>
+          </div>
+
+          <div className="rounded-full bg-black/55 px-3 py-2 text-sm font-semibold text-white">
+            ${price}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function HomePage() {
   return (
-    <div className="pt-6">
-      <section className="page-shell">
-        <div className="hero-glow surface-card overflow-hidden rounded-[36px]">
-          <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="relative min-h-[540px] px-6 py-10 sm:px-10 sm:py-14">
-              <Image
-                src="/images/hero-banner.svg"
-                alt="BimBoy Studios hero artwork"
-                fill
-                priority
-                className="object-cover opacity-35"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/84 to-black" />
+    <main className="min-h-screen bg-black text-white">
+      <section className="mx-auto max-w-7xl px-6 pt-8">
+        <div className="overflow-hidden rounded-[32px] border border-white/5 bg-[#050505]">
+          <div className="relative h-[560px] w-full">
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-35"
+              style={{ backgroundImage: "url('/images/hero-banner.svg')" }}
+            />
+            <div className="absolute inset-0 bg-black/45" />
 
-              <div className="relative z-10 max-w-3xl">
-                <div className="inline-flex rounded-full border border-pink-400/20 bg-white/6 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-pink-300">
-                  Premium Studio Platform
-                </div>
-
-                <h1 className="mt-6 text-5xl font-black tracking-tight text-white sm:text-6xl">
-                  Premium studio releases with creator pages, credits, and
-                  royalty visibility built in.
-                </h1>
-
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/72 sm:text-xl">
-                  BimBoy Studios brings cinematic releases, performer identity,
-                  and transparent participation into one premium destination.
-                </p>
-
-                <div className="mt-8 flex flex-wrap gap-4">
-                  <Link
-                    href="/browse"
-                    className="rounded-2xl bg-gradient-to-r from-pink-500 to-violet-500 px-6 py-3 font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:brightness-110"
-                  >
-                    Watch Releases
-                  </Link>
-                  <Link
-                    href="/creators"
-                    className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white/90 transition hover:border-white/20 hover:bg-white/8"
-                  >
-                    Explore Creators
-                  </Link>
-                  <Link
-                    href="/studios"
-                    className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white/90 transition hover:border-white/20 hover:bg-white/8"
-                  >
-                    View Studios
-                  </Link>
-                </div>
+            <div className="absolute inset-0 flex flex-col justify-center px-14">
+              <div className="mb-6 inline-flex w-fit rounded-full border border-pink-400/20 bg-white/5 px-5 py-3 text-sm font-bold tracking-wide text-pink-300">
+                FEATURED STUDIO RELEASE
               </div>
-            </div>
 
-            <div className="grid gap-4 px-6 py-6 sm:px-8 sm:py-8">
-              {[
-                {
-                  label: "Featured Release",
-                  value: "Midnight Premiere",
-                  text: "A polished launch destination for premium drops, creator visibility, and studio-led promotion.",
-                },
-                {
-                  label: "Creator Identity",
-                  value: "Profiles With Credits",
-                  text: "Performer pages connect audiences to releases, appearances, and long-term brand presence.",
-                },
-                {
-                  label: "Royalty Visibility",
-                  value: "Clear Participation",
-                  text: "Revenue visibility and credits sit alongside the content instead of disappearing behind it.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-3xl border border-white/8 bg-black/40 p-5"
-                >
-                  <p className="text-xs uppercase tracking-[0.24em] text-white/45">
-                    {item.label}
-                  </p>
-                  <p className="mt-3 text-2xl font-bold text-white">
-                    {item.value}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-white/60">
-                    {item.text}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+              <h1 className="max-w-4xl text-6xl font-black leading-[0.95] tracking-tight md:text-7xl">
+                Premium studio releases built around creators.
+              </h1>
 
-      <section className="page-shell mt-16">
-        <SectionTitle
-          eyebrow="Featured Releases"
-          title="Studio drops designed to feel premium from first impression to final credits."
-          description="Discover standout releases, polished presentation, and content built to give creators and studios equal presence."
-        />
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {featuredReleases.map((video) => (
-            <VideoCard key={video.slug} video={video} />
-          ))}
-        </div>
-      </section>
-
-      <section className="page-shell mt-16">
-        <SectionTitle
-          eyebrow="Featured Creators"
-          title="Creator pages that hold identity, appearances, and audience momentum in one place."
-          description="Profiles are designed to showcase talent beyond a single release and make every credit count."
-        />
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {featuredCreators.map((creator) => (
-            <CreatorCard key={creator.slug} creator={creator} />
-          ))}
-        </div>
-      </section>
-
-      <section className="page-shell mt-16">
-        <SectionTitle
-          eyebrow="Featured Studios"
-          title="Studios get a refined home for releases, cast, and brand presence."
-          description="Each studio page brings together premium presentation, release discovery, and the people behind the work."
-        />
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {featuredStudios.map((studio) => (
-            <article key={studio.slug} className="surface-card rounded-[28px] p-6">
-              <p className="text-xs uppercase tracking-[0.24em] text-pink-300">
-                {studio.status}
+              <p className="mt-8 max-w-3xl text-2xl text-white/80">
+                Cinematic releases, verified talent, performer credits, and
+                direct unlock access in one premium destination.
               </p>
-              <h2 className="mt-4 text-2xl font-semibold text-white">
-                {studio.name}
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-white/62">{studio.focus}</p>
-              <Link
-                href={`/studios/${studio.slug}`}
-                className="mt-6 inline-flex rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/20"
-              >
-                View Studios
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
 
-      <section className="page-shell mt-16">
-        <div className="surface-card rounded-[36px] px-6 py-8 sm:px-10 sm:py-10">
-          <SectionTitle
-            eyebrow="Royalties"
-            title="A clearer way to show who helped build the release and how participation is tracked."
-            description="BimBoy Studios pairs content with performer credits and royalty visibility so creators can be recognized as part of the value they help create."
-          />
-          <div className="grid gap-5 md:grid-cols-3">
-            {[
-              [
-                "Performer Credits",
-                "Give each release a visible connection to the people who appear in it.",
-              ],
-              [
-                "Studio Structure",
-                "Keep releases, talent, and presentation aligned under one polished studio identity.",
-              ],
-              [
-                "Royalty Visibility",
-                "Bring participation into view with reporting surfaces designed for clarity.",
-              ],
-            ].map(([title, description]) => (
-              <div key={title} className="rounded-[28px] border border-white/8 bg-black/30 p-6">
-                <h3 className="text-2xl font-semibold text-white">{title}</h3>
-                <p className="mt-3 text-sm leading-7 text-white/62">
-                  {description}
-                </p>
+              <div className="mt-10 flex gap-5">
+                <Link
+                  href="/browse"
+                  className="rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 px-10 py-5 text-lg font-bold shadow-xl shadow-pink-500/20"
+                >
+                  Watch Releases
+                </Link>
+
+                <Link
+                  href="/creators"
+                  className="rounded-2xl border border-white/10 bg-white/5 px-10 py-5 text-lg font-bold hover:border-white/20"
+                >
+                  Explore Creators
+                </Link>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="page-shell mt-16">
-        <div className="surface-card rounded-[36px] px-6 py-10 text-center sm:px-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-pink-300">
-            Join Beta
-          </p>
-          <h2 className="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
-            Enter the next chapter of premium studio and creator releases.
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/66">
-            Get early access to BimBoy Studios and follow the platform as
-            releases, creator pages, and royalty visibility come together.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/signup"
-              className="rounded-2xl bg-gradient-to-r from-pink-500 to-violet-500 px-7 py-3 font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:brightness-110"
-            >
-              Join Beta
-            </Link>
+      <section className="mx-auto max-w-7xl px-6 py-14">
+        <p className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-pink-400">
+          Featured Releases
+        </p>
+
+        <h2 className="mb-8 text-5xl font-black tracking-tight">
+          Watch, preview, and unlock premium videos
+        </h2>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <HoverVideoCard
+            title="My felt good this morning"
+            slug="my-felt-good-this-morning"
+            cast="Spikeydee"
+            price="12.99"
+            videoId={HERO_VIDEO_ID}
+          />
+
+          <div className="overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0a0a]">
+            <div className="aspect-video w-full bg-[radial-gradient(circle_at_top,_rgba(255,92,168,0.24),_transparent_40%),linear-gradient(160deg,_rgba(141,125,255,0.34),_rgba(8,8,10,0.96))]" />
+            <div className="p-6">
+              <h3 className="text-2xl font-bold">Next Release</h3>
+              <p className="mt-2 text-white/70">Your second upload goes here.</p>
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0a0a]">
+            <div className="aspect-video w-full bg-[radial-gradient(circle_at_top,_rgba(255,92,168,0.24),_transparent_40%),linear-gradient(160deg,_rgba(141,125,255,0.34),_rgba(8,8,10,0.96))]" />
+            <div className="p-6">
+              <h3 className="text-2xl font-bold">Third Release</h3>
+              <p className="mt-2 text-white/70">Your third upload goes here.</p>
+            </div>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
