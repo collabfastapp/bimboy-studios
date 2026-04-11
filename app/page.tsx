@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 
@@ -11,9 +12,17 @@ type ReleaseCardProps = {
   cast: string;
   price: string;
   videoId: string;
+  posterSrc: string;
 };
 
-function HoverVideoCard({ title, slug, cast, price, videoId }: ReleaseCardProps) {
+function HoverVideoCard({
+  title,
+  slug,
+  cast,
+  price,
+  videoId,
+  posterSrc,
+}: ReleaseCardProps) {
   const [hovered, setHovered] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -46,13 +55,16 @@ function HoverVideoCard({ title, slug, cast, price, videoId }: ReleaseCardProps)
     >
       <div className="relative aspect-video w-full overflow-hidden bg-black">
         {!hovered ? (
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0.18)), url('/images/hero-banner.svg')",
-            }}
-          />
+          <>
+            <Image
+              src={posterSrc}
+              alt={title}
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          </>
         ) : (
           <iframe
             src={`https://iframe.videodelivery.net/${videoId}?muted=true&autoplay=true&controls=false&loop=true`}
@@ -94,21 +106,20 @@ export default function HomePage() {
 
             <div className="absolute inset-0 flex flex-col justify-center px-14">
               <div className="mb-6 inline-flex w-fit rounded-full border border-pink-400/20 bg-white/5 px-5 py-3 text-sm font-bold tracking-wide text-pink-300">
-                FEATURED STUDIO RELEASE
+                FEATURED RELEASE
               </div>
 
               <h1 className="max-w-4xl text-6xl font-black leading-[0.95] tracking-tight md:text-7xl">
-                Premium studio releases built around creators.
+                Premium releases built around creators.
               </h1>
 
               <p className="mt-8 max-w-3xl text-2xl text-white/80">
-                Cinematic releases, verified talent, performer credits, and
-                direct unlock access in one premium destination.
+                Cinematic releases, verified talent, performer credits, and direct unlock access in one premium destination.
               </p>
 
               <div className="mt-10 flex gap-5">
                 <Link
-                  href="/browse"
+                  href="/studios"
                   className="rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 px-10 py-5 text-lg font-bold shadow-xl shadow-pink-500/20"
                 >
                   Watch Releases
@@ -128,7 +139,7 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-7xl px-6 py-14">
         <p className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-pink-400">
-          Featured Releases
+          Trending Now
         </p>
 
         <h2 className="mb-8 text-5xl font-black tracking-tight">
@@ -142,6 +153,7 @@ export default function HomePage() {
             cast="Spikeydee"
             price="12.99"
             videoId={HERO_VIDEO_ID}
+            posterSrc="/images/poster-1.jpg"
           />
 
           <div className="overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0a0a]">
