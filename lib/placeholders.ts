@@ -11,8 +11,6 @@ export const siteNavigation: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/browse", label: "Browse" },
   { href: "/creators", label: "Creators" },
-  { href: "/studios", label: "Studios" },
-  { href: "/royalties", label: "Royalties" },
 ];
 
 export const stats: StatItem[] = [
