@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 
@@ -29,9 +28,7 @@ function HoverVideoCard({
   function handleEnter() {
     setHovered(true);
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     timeoutRef.current = setTimeout(() => {
       setHovered(false);
@@ -40,10 +37,7 @@ function HoverVideoCard({
 
   function handleLeave() {
     setHovered(false);
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }
 
   return (
@@ -53,46 +47,38 @@ function HoverVideoCard({
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
     >
-      <div className="relative aspect-video w-full overflow-hidden">
-        <div
-          className={`absolute inset-0 transition-opacity duration-300 ${
-            hovered ? "opacity-0" : "opacity-100"
-          }`}
-        >
-          <Image
-            src={posterSrc}
-            alt={title}
-            fill
-            priority
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-        </div>
-
-        <div
-          className={`absolute inset-0 transition-opacity duration-300 ${
-            hovered ? "opacity-100" : "opacity-0"
-          }`}
-        >
+      <div className="relative aspect-video w-full overflow-hidden bg-black">
+        {!hovered ? (
+          <>
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url('${posterSrc}')` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent" />
+          </>
+        ) : (
           <iframe
             src={`https://iframe.videodelivery.net/${videoId}?muted=true&autoplay=true&controls=false&loop=true`}
             className="absolute inset-0 h-full w-full"
             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        </div>
+        )}
 
-        <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-pink-200">
+        <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-pink-200">
           Premium
         </div>
+      </div>
 
-        <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+      <div className="border-t border-white/5 p-5">
+        <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-2xl font-bold text-white drop-shadow-lg">{title}</h3>
-            <p className="mt-1 text-sm text-white/75">Cast: {cast}</p>
+            <h3 className="text-2xl font-bold text-white leading-tight">
+              {title}
+            </h3>
+            <p className="mt-2 text-sm text-white/70">Cast: {cast}</p>
           </div>
 
-          <div className="rounded-full bg-black/55 px-3 py-2 text-sm font-semibold text-white">
+          <div className="rounded-full bg-white/5 px-3 py-2 text-sm font-semibold text-white">
             ${price}
           </div>
         </div>
@@ -129,7 +115,7 @@ export default function HomePage() {
 
               <div className="mt-10 flex gap-5">
                 <Link
-                  href="/browse"
+                  href="/studios"
                   className="rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 px-10 py-5 text-lg font-bold shadow-xl shadow-pink-500/20"
                 >
                   Watch Releases
@@ -168,7 +154,7 @@ export default function HomePage() {
 
           <div className="overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0a0a]">
             <div className="aspect-video w-full bg-[radial-gradient(circle_at_top,_rgba(255,92,168,0.24),_transparent_40%),linear-gradient(160deg,_rgba(141,125,255,0.34),_rgba(8,8,10,0.96))]" />
-            <div className="p-6">
+            <div className="border-t border-white/5 p-5">
               <h3 className="text-2xl font-bold">Next Release</h3>
               <p className="mt-2 text-white/70">Your second upload goes here.</p>
             </div>
@@ -176,7 +162,7 @@ export default function HomePage() {
 
           <div className="overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0a0a]">
             <div className="aspect-video w-full bg-[radial-gradient(circle_at_top,_rgba(255,92,168,0.24),_transparent_40%),linear-gradient(160deg,_rgba(141,125,255,0.34),_rgba(8,8,10,0.96))]" />
-            <div className="p-6">
+            <div className="border-t border-white/5 p-5">
               <h3 className="text-2xl font-bold">Third Release</h3>
               <p className="mt-2 text-white/70">Your third upload goes here.</p>
             </div>
