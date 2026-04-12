@@ -53,25 +53,34 @@ function HoverVideoCard({
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
     >
-      <div className="relative aspect-video w-full overflow-hidden bg-black">
-        {!hovered ? (
-          <>
-            <Image
-              src={posterSrc}
-              alt={title}
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-          </>
-        ) : (
+      <div className="relative aspect-video w-full overflow-hidden">
+        <div
+          className={`absolute inset-0 transition-opacity duration-300 ${
+            hovered ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <Image
+            src={posterSrc}
+            alt={title}
+            fill
+            priority
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        </div>
+
+        <div
+          className={`absolute inset-0 transition-opacity duration-300 ${
+            hovered ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <iframe
             src={`https://iframe.videodelivery.net/${videoId}?muted=true&autoplay=true&controls=false&loop=true`}
             className="absolute inset-0 h-full w-full"
             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           />
-        )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        </div>
 
         <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-pink-200">
           Premium
@@ -114,12 +123,13 @@ export default function HomePage() {
               </h1>
 
               <p className="mt-8 max-w-3xl text-2xl text-white/80">
-                Cinematic releases, verified talent, performer credits, and direct unlock access in one premium destination.
+                Cinematic releases, verified talent, performer credits, and
+                direct unlock access in one premium destination.
               </p>
 
               <div className="mt-10 flex gap-5">
                 <Link
-                  href="/studios"
+                  href="/browse"
                   className="rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 px-10 py-5 text-lg font-bold shadow-xl shadow-pink-500/20"
                 >
                   Watch Releases
