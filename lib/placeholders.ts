@@ -1,5 +1,7 @@
 import type {
+  CloudflareStreamUploadConfig,
   CreatorSummary,
+  CreatorVideoRecord,
   DashboardNavItem,
   NavItem,
   StatItem,
@@ -110,7 +112,7 @@ export const dashboardNavigation: DashboardNavItem[] = [
   {
     href: "/dashboard",
     label: "Overview",
-    description: "High-level creator dashboard placeholder.",
+    description: "Creator home for uploads, publishing, and profile activity.",
   },
   {
     href: "/dashboard/profile",
@@ -120,7 +122,17 @@ export const dashboardNavigation: DashboardNavItem[] = [
   {
     href: "/dashboard/content",
     label: "Content",
-    description: "Reserved for release lists and creator-owned media.",
+    description: "Creator content hub for uploads, library visibility, and status.",
+  },
+  {
+    href: "/dashboard/uploads",
+    label: "Uploads",
+    description: "Submit new long-form videos and track transfer progress.",
+  },
+  {
+    href: "/dashboard/videos",
+    label: "My Videos",
+    description: "Manage creator uploads across draft, processing, and live states.",
   },
   {
     href: "/dashboard/earnings",
@@ -199,3 +211,92 @@ export const adminNavigation: DashboardNavItem[] = [
     description: "Support, abuse, and compliance handling placeholder.",
   },
 ];
+
+export const creatorVideos: CreatorVideoRecord[] = [
+  {
+    id: "vid_001",
+    slug: "after-dark-session",
+    title: "After Dark Session",
+    description:
+      "A long-form creator upload with polished presentation, extended runtime, and premium access positioning.",
+    creatorSlug: "luna-vale",
+    creatorName: "Luna Vale",
+    tags: ["cinematic", "late-night", "featured"],
+    price: 19,
+    previewLengthSeconds: 75,
+    durationMinutes: 28,
+    status: "Published",
+    access: "Premium",
+    uploadProgress: 100,
+    updatedAt: "Updated 2 hours ago",
+    cast: ["Luna Vale"],
+    streamAssetStatus: "ready",
+    streamUid: "stream_after_dark_session",
+  },
+  {
+    id: "vid_002",
+    slug: "private-room-cut",
+    title: "Private Room Cut",
+    description:
+      "Creator-owned release prepared for premium playback with profile-led discovery and cast visibility.",
+    creatorSlug: "nico-voss",
+    creatorName: "Nico Voss",
+    tags: ["studio-style", "premium", "long-form"],
+    price: 15,
+    previewLengthSeconds: 60,
+    durationMinutes: 24,
+    status: "Processing",
+    access: "Premium",
+    uploadProgress: 82,
+    updatedAt: "Processing now",
+    cast: ["Nico Voss", "Rhea Onyx"],
+    streamAssetStatus: "processing",
+    streamUid: "stream_private_room_cut",
+  },
+  {
+    id: "vid_003",
+    slug: "velvet-entry",
+    title: "Velvet Entry",
+    description:
+      "A creator upload prepared for scheduled publishing with flexible preview controls and metadata editing.",
+    creatorSlug: "rhea-onyx",
+    creatorName: "Rhea Onyx",
+    tags: ["editorial", "launch", "profile"],
+    price: 0,
+    previewLengthSeconds: 45,
+    durationMinutes: 21,
+    status: "Draft",
+    access: "Free",
+    uploadProgress: 14,
+    updatedAt: "Saved today",
+    cast: ["Rhea Onyx"],
+    streamAssetStatus: "awaiting_upload",
+  },
+  {
+    id: "vid_004",
+    slug: "members-only-room",
+    title: "Members Only Room",
+    description:
+      "A locked release prepared for gated access once playback and rights settings are finalized.",
+    creatorSlug: "luna-vale",
+    creatorName: "Luna Vale",
+    tags: ["locked", "premium", "exclusive"],
+    price: 24,
+    previewLengthSeconds: 90,
+    durationMinutes: 33,
+    status: "Locked",
+    access: "Premium",
+    uploadProgress: 100,
+    updatedAt: "Locked for review",
+    cast: ["Luna Vale", "Nico Voss"],
+    streamAssetStatus: "ready",
+    streamUid: "stream_members_only_room",
+  },
+];
+
+export const cloudflareStreamConfig: CloudflareStreamUploadConfig = {
+  uploadMode: "direct-creator-upload",
+  supportsTus: true,
+  requiresSignedPlayback: false,
+  moderationPipelineEnabled: false,
+};

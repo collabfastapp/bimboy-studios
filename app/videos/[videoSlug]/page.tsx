@@ -7,7 +7,7 @@ const VIDEO_ID = "31adab135f48d93f64c3ae2861d67fe6";
 export default function VideoPage() {
   const videoRef = useRef<HTMLIFrameElement | null>(null);
   const [locked, setLocked] = useState(false);
-  const [time, setTime] = useState(0);
+  const [, setTime] = useState(0);
 
   // 2 minute lock timer
   useEffect(() => {
